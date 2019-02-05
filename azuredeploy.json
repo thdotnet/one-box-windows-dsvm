@@ -226,7 +226,7 @@
                "apiVersion":"[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
                "location":"[resourceGroup().location]",
                "dependsOn":[
-                  "[resourceId('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+                  "[resourceId('Microsoft.Compute/virtualMachines/', variables('virtualMachineName'))]"
                ],
                "properties":{
                   "publisher":"Microsoft.Compute",
