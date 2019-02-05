@@ -188,9 +188,9 @@
                   }
                },
                "imageReference":{
-                  "publisher":"[variables('imagePublisher')]",
-                  "offer":"[variables('imageOffer')]",
-                  "sku":"[variables('imageSku')]",
+                  "publisher":"MicrosoftRServer",
+                  "offer":"MLServer-WS2016",
+                  "sku":"Enterprise",
                   "version":"latest"
                }
             },
@@ -234,9 +234,10 @@
                   "autoUpgradeMinorVersion":true,
                   "settings":{
                      "fileUris":[
-                        "[concat(variables('scriptsUri'), variables('scriptFileName'))]"
+                        "[concat(variables('scriptsUri'), 'ConfigureOnebox.ps1')]",
+                        "[concat(variables('scriptsUri'), 'RunConfigureOnebox.ps1')]"
                      ],
-                     "commandToExecute":"[concat('powershell -ExecutionPolicy Unrestricted -File ', './', variables('scriptFileName'), ' ', variables('scriptParameters'))]"
+                     "commandToExecute":"[concat('powershell -ExecutionPolicy Unrestricted -File ./RunConfigureOnebox.ps1 -script \"ConfigureOnebox.ps1\" -username \"', parameters('adminUserName'), '\" -password \"', parameters('adminPassword'), '\"')]"
                   }
                }
             }
@@ -263,7 +264,7 @@
          "tags":{
 
          }
-      },
+      }
    ],
    "outputs":{
       "adminUsername":{
