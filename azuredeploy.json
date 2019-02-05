@@ -168,7 +168,7 @@
             "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
          ],
          "plan":{
-            "name":"[variables('imageSku')]",
+            "name":"[variables('virtualMachineSize')]",
             "publisher":"[variables('imagePublisher')]",
             "product":"[variables('imageOffer')]"
          },
