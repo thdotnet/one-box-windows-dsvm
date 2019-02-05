@@ -123,8 +123,7 @@
          "apiVersion":"2018-08-01",
          "location":"[parameters('location')]",
          "dependsOn":[
-            "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]",
-            "[concat('Microsoft.Resources/deployments/', 'AddLBBackendPool-azr-lb-cor-ml-n-20190201182606')]"
+            "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
          ],
          "properties":{
             "ipConfigurations":[
@@ -265,88 +264,6 @@
 
          }
       },
-      {
-         "apiVersion":"2017-05-10",
-         "type":"Microsoft.Resources/deployments",
-         "name":"AddLBBackendPool-azr-lb-cor-ml-n-20190201182606",
-         "resourceGroup":"[parameters('loadBalancerRG')]",
-         "properties":{
-            "mode":"Incremental",
-            "parameters":{
-
-            },
-            "template":{
-               "$schema":"http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-               "contentVersion":"1.0.0.0",
-               "parameters":{
-
-               },
-               "variables":{
-
-               },
-               "resources":[
-                  {
-                     "name":"azr-lb-cor-ml-n",
-                     "id":"/subscriptions/a3c12ec2-455f-4c03-8454-b049ccea67e9/resourceGroups/azr-rg-cor-ml-n/providers/Microsoft.Network/loadBalancers/azr-lb-cor-ml-n",
-                     "type":"Microsoft.Network/loadBalancers",
-                     "location":"eastus2",
-                     "properties":{
-                        "provisioningState":"Succeeded",
-                        "resourceGuid":"2e9d5031-524d-49f5-bd6b-c07bbc87518b",
-                        "frontendIPConfigurations":[
-                           {
-                              "name":"LoadBalancerFrontEnd",
-                              "id":"/subscriptions/a3c12ec2-455f-4c03-8454-b049ccea67e9/resourceGroups/azr-rg-cor-ml-n/providers/Microsoft.Network/loadBalancers/azr-lb-cor-ml-n/frontendIPConfigurations/LoadBalancerFrontEnd",
-                              "etag":"W/\"ad31eb4f-50ce-4851-88a8-52bc8b7aa8b0\"",
-                              "type":"Microsoft.Network/loadBalancers/frontendIPConfigurations",
-                              "properties":{
-                                 "provisioningState":"Succeeded",
-                                 "privateIPAddress":"10.144.1.11",
-                                 "privateIPAllocationMethod":"Static",
-                                 "subnet":{
-                                    "id":"/subscriptions/a3c12ec2-455f-4c03-8454-b049ccea67e9/resourceGroups/azr-rg-cor-ml-n/providers/Microsoft.Network/virtualNetworks/azr-vn-cor-ml-n/subnets/azr-sn-cor-ml-vms-n"
-                                 }
-                              }
-                           }
-                        ],
-                        "backendAddressPools":[
-                           {
-                              "id":"[parameters('backendPoolId')]",
-                              "name":"[parameters('backendPoolName')]",
-                              "properties":{
-
-                              }
-                           }
-                        ],
-                        "loadBalancingRules":[
-
-                        ],
-                        "probes":[
-
-                        ],
-                        "inboundNatRules":[
-
-                        ],
-                        "outboundRules":[
-
-                        ],
-                        "inboundNatPools":[
-
-                        ]
-                     },
-                     "sku":{
-                        "name":"Standard",
-                        "tier":"Regional"
-                     },
-                     "apiVersion":"2018-08-01"
-                  }
-               ],
-               "outputs":{
-
-               }
-            }
-         }
-      }
    ],
    "outputs":{
       "adminUsername":{
