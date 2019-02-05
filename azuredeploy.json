@@ -109,12 +109,7 @@
       "nsgId":"[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
       "vnetId":"[parameters('virtualNetworkId')]",
       "subnetRef":"[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-      "scriptsUri":"[uri(deployment().properties.templateLink.uri, '.')]",
-      "scriptFileName":"Configure-Onebox.ps1",
-      "scriptParameters":"[concat(' -password \"', parameters('adminPassword'), '\"')]",
-      "imagePublisher":"microsoft-ads",
-      "imageOffer":"windows-data-science-vm",
-      "imageSku":"windows2016"
+      "scriptsUri":"[uri(deployment().properties.templateLink.uri, '.')]"
    },
    "resources":[
       {
@@ -170,7 +165,7 @@
          "dependsOn":[
             "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]",
             "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
-         ],         
+         ],
          "properties":{
             "hardwareProfile":{
                "vmSize":"[parameters('virtualMachineSize')]"
@@ -199,19 +194,9 @@
             "osProfile":{
                "computerName":"[parameters('virtualMachineName')]",
                "adminUsername":"[parameters('adminUsername')]",
-               "adminPassword":"[parameters('adminPassword')]",
-               "windowsConfiguration":{
-                  "enableAutomaticUpdates":true,
-                  "provisionVmAgent":true
-               }
+               "adminPassword":"[parameters('adminPassword')]"
             },
-            "licenseType":"Windows_Server",
-            "diagnosticsProfile":{
-               "bootDiagnostics":{
-                  "enabled":true,
-                  "storageUri":"[concat('https://', parameters('diagnosticsStorageAccountName'), '.blob.core.windows.net/')]"
-               }
-            }
+            "licenseType":"Windows_Server"
          },
          "resources":[
             {
@@ -262,9 +247,9 @@
       }
    ],
    "outputs":{
-      "adminUsername":{
+      "hostname":{
          "type":"string",
-         "value":"[parameters('adminUsername')]"
+         "value":"[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
       }
    }
 }
