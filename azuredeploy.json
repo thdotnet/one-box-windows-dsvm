@@ -146,15 +146,41 @@
          }
       },
       {
-         "name":"[parameters('networkSecurityGroupName')]",
+         "apiVersion":"[providers('Microsoft.Network','networkSecurityGroups').apiVersions[0]]",
          "type":"Microsoft.Network/networkSecurityGroups",
-         "apiVersion":"2018-08-01",
-         "location":"[parameters('location')]",
+         "name":"[parameters('networkSecurityGroupName')]",
+         "location":"[resourceGroup().location]",
          "properties":{
-            "securityRules":"[parameters('networkSecurityGroupRules')]"
-         },
-         "tags":{
-
+            "securityRules":[
+               {
+                  "name":"Remote",
+                  "properties":{
+                     "description":"Allows Remote Desktop",
+                     "protocol":"Tcp",
+                     "sourcePortRange":"*",
+                     "destinationPortRange":"3389",
+                     "sourceAddressPrefix":"*",
+                     "destinationAddressPrefix":"*",
+                     "access":"Allow",
+                     "priority":101,
+                     "direction":"Inbound"
+                  }
+               },
+               {
+                  "name":"WebNode",
+                  "properties":{
+                     "description":"Allows WebNode traffic",
+                     "protocol":"Tcp",
+                     "sourcePortRange":"*",
+                     "destinationPortRange":"12800",
+                     "sourceAddressPrefix":"*",
+                     "destinationAddressPrefix":"*",
+                     "access":"Allow",
+                     "priority":102,
+                     "direction":"Inbound"
+                  }
+               }
+            ]
          }
       },
       {
@@ -247,6 +273,6 @@
       }
    ],
    "outputs":{
-      
+
    }
 }
