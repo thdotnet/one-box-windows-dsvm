@@ -81,7 +81,6 @@
   "variables": {
     "storageAccountName": "[parameters('storageAccountName')]",
     "nicName": "[parameters('nicName')]",
-    "subnetPrefix": "[parameters('subnetPrefix')]",
     "vmName": "[parameters('dnsLabelPrefix')]",
     "networkSecurityGroupName": "[parameters('networkSecurityGroupName')]",
     "subnetRef": "[parameters('subnetId')]",
