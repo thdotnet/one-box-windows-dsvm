@@ -1,278 +1,256 @@
 {
-   "$schema":"http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-   "contentVersion":"1.0.0.0",
-   "parameters":{
-      "location":{
-         "type":"string"
-      },
-      "networkInterfaceName":{
-         "type":"string"
-      },
-      "networkSecurityGroupName":{
-         "type":"string"
-      },
-      "networkSecurityGroupRules":{
-         "type":"array"
-      },
-      "subnetName":{
-         "type":"string"
-      },
-      "virtualNetworkId":{
-         "type":"string"
-      },
-      "virtualMachineName":{
-         "type":"string"
-      },
-      "virtualMachineRG":{
-         "type":"string"
-      },
-      "osDiskType":{
-         "type":"string"
-      },
-      "virtualMachineSize":{
-         "type":"string",
-         "defaultValue":"Standard_D3_v2",
-         "allowedValues":[
-            "Standard_D2_v2",
-            "Standard_D3_v2",
-            "Standard_D4_v2",
-            "Standard_D5_v2",
-            "Standard_D11_v2",
-            "Standard_D12_v2",
-            "Standard_D13_v2",
-            "Standard_D14_v2",
-            "Standard_D15_v2",
-            "Standard_D2",
-            "Standard_D3",
-            "Standard_D4",
-            "Standard_D11",
-            "Standard_D12",
-            "Standard_D13",
-            "Standard_D14",
-            "Standard_DS1",
-            "Standard_DS2",
-            "Standard_DS3",
-            "Standard_DS4",
-            "Standard_DS11",
-            "Standard_DS12",
-            "Standard_DS13",
-            "Standard_DS14",
-            "Standard_DS2_v2",
-            "Standard_DS3_v2",
-            "Standard_DS4_v2",
-            "Standard_DS5_v2",
-            "Standard_DS11_v2",
-            "Standard_DS12_v2",
-            "Standard_DS13_v2",
-            "Standard_DS14_v2",
-            "Standard_DS15_v2"
-         ],
-         "metadata":{
-            "description":"Size of VM"
-         }
-      },
-      "adminUsername":{
-         "type":"string"
-      },
-      "adminPassword":{
-         "type":"secureString"
-      },
-      "diagnosticsStorageAccountName":{
-         "type":"string"
-      },
-      "diagnosticsStorageAccountId":{
-         "type":"string"
-      },
-      "diagnosticsStorageAccountType":{
-         "type":"string"
-      },
-      "diagnosticsStorageAccountKind":{
-         "type":"string"
-      },
-      "zone":{
-         "type":"string"
-      },
-      "loadBalancerId":{
-         "type":"string"
-      },
-      "backendPoolId":{
-         "type":"string"
-      },
-      "backendPoolName":{
-         "type":"string"
-      },
-      "loadBalancerRG":{
-         "type":"string"
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "subnetId":{
+      "type": "string",
+       "metadata": {
+        "description": "The Id of the subnet - Get from Resource Explorer."
       }
-   },
-   "variables":{
-      "nsgId":"[resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]",
-      "vnetId":"[parameters('virtualNetworkId')]",
-      "subnetRef":"[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-      "scriptsUri":"[uri(deployment().properties.templateLink.uri, '.')]"
-   },
-   "resources":[
-      {
-         "name":"[parameters('networkInterfaceName')]",
-         "type":"Microsoft.Network/networkInterfaces",
-         "apiVersion":"2018-08-01",
-         "location":"[parameters('location')]",
-         "dependsOn":[
-            "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
-         ],
-         "properties":{
-            "ipConfigurations":[
-               {
-                  "name":"ipconfig1",
-                  "properties":{
-                     "subnet":{
-                        "id":"[variables('subnetRef')]"
-                     },
-                     "privateIPAllocationMethod":"Dynamic",
-                     "loadBalancerBackendAddressPools":[
-                        {
-                           "id":"[parameters('backendPoolId')]"
-                        }
-                     ]
-                  }
-               }
-            ],
-            "networkSecurityGroup":{
-               "id":"[variables('nsgId')]"
+    },
+     "subnetPrefix":{
+      "type": "string"       
+    },
+     "storageAccountName":{
+      "type": "string"       
+    },
+     "nicName":{
+      "type": "string"       
+    },
+     "networkSecurityGroupName":{
+      "type": "string"       
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the Virtual Machine."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Password for the Virtual Machine and Operationalization. Must be 8-16 characters long and contain at least 1 uppercase character(s), 1+ lowercase character(s), 1+ number(s), and 1+ special character(s)"
+      }
+    },
+    "dnsLabelPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+      }
+    },
+    "vmSku": {
+      "type": "string",
+      "defaultValue": "Standard_D3_v2",
+      "allowedValues": [
+        "Standard_D2_v2",
+        "Standard_D3_v2",
+        "Standard_D4_v2",
+        "Standard_D5_v2",
+        "Standard_D11_v2",
+        "Standard_D12_v2",
+        "Standard_D13_v2",
+        "Standard_D14_v2",
+        "Standard_D15_v2",
+        "Standard_D2",
+        "Standard_D3",
+        "Standard_D4",
+        "Standard_D11",
+        "Standard_D12",
+        "Standard_D13",
+        "Standard_D14",
+        "Standard_DS1",
+        "Standard_DS2",
+        "Standard_DS3",
+        "Standard_DS4",
+        "Standard_DS11",
+        "Standard_DS12",
+        "Standard_DS13",
+        "Standard_DS14",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_DS4_v2",
+        "Standard_DS5_v2",
+        "Standard_DS11_v2",
+        "Standard_DS12_v2",
+        "Standard_DS13_v2",
+        "Standard_DS14_v2",
+        "Standard_DS15_v2"
+      ],
+      "metadata": {
+        "description": "Size of VM"
+      } 
+    }
+  },
+  "variables": {
+    "storageAccountName": "[parameters('storageAccountName')]",
+    "nicName": "[parameters('nicName')]",
+    "subnetPrefix": "[parameters('subnetPrefix')]",
+    "vmName": "[parameters('dnsLabelPrefix')]",
+    "networkSecurityGroupName": "[parameters('networkSecurityGroupName')]",
+    "subnetRef": "[parameters('subnetId')]",
+    "scriptsUri": "[uri(deployment().properties.templateLink.uri, '.')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "[providers('Microsoft.Storage','storageAccounts').apiVersions[0]]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "Storage",
+      "properties": {}
+    },
+    {
+      "apiVersion": "[providers('Microsoft.Network','networkSecurityGroups').apiVersions[0]]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('networkSecurityGroupName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "Remote",
+            "properties": {
+              "description": "Allows Remote Desktop",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
             }
-         },
-         "tags":{
-
-         }
-      },
-      {
-         "apiVersion":"[providers('Microsoft.Network','networkSecurityGroups').apiVersions[0]]",
-         "type":"Microsoft.Network/networkSecurityGroups",
-         "name":"[parameters('networkSecurityGroupName')]",
-         "location":"[resourceGroup().location]",
-         "properties":{
-            "securityRules":[
-               {
-                  "name":"Remote",
-                  "properties":{
-                     "description":"Allows Remote Desktop",
-                     "protocol":"Tcp",
-                     "sourcePortRange":"*",
-                     "destinationPortRange":"3389",
-                     "sourceAddressPrefix":"*",
-                     "destinationAddressPrefix":"*",
-                     "access":"Allow",
-                     "priority":101,
-                     "direction":"Inbound"
-                  }
-               },
-               {
-                  "name":"WebNode",
-                  "properties":{
-                     "description":"Allows WebNode traffic",
-                     "protocol":"Tcp",
-                     "sourcePortRange":"*",
-                     "destinationPortRange":"12800",
-                     "sourceAddressPrefix":"*",
-                     "destinationAddressPrefix":"*",
-                     "access":"Allow",
-                     "priority":102,
-                     "direction":"Inbound"
-                  }
-               }
-            ]
-         }
-      },
-      {
-         "name":"[parameters('virtualMachineName')]",
-         "type":"Microsoft.Compute/virtualMachines",
-         "apiVersion":"[providers('Microsoft.Compute','virtualMachines').apiVersions[0]]",
-         "location":"[parameters('location')]",
-         "dependsOn":[
-            "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]",
-            "[concat('Microsoft.Storage/storageAccounts/', parameters('diagnosticsStorageAccountName'))]"
-         ],
-         "properties":{
-            "hardwareProfile":{
-               "vmSize":"[parameters('virtualMachineSize')]"
+          },
+          {
+            "name": "WebNode",
+            "properties": {
+              "description": "Allows WebNode traffic",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "12800",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 102,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },    
+    {
+      "apiVersion": "[providers('Microsoft.Network','networkInterfaces').apiVersions[0]]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+      
+      ],
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",              
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "[providers('Microsoft.Compute','virtualMachines').apiVersions[0]]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSku')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftRServer",
+            "offer": "MLServer-WS2016",
+            "sku": "Enterprise",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))).primaryEndpoints.blob, 'vhds/osdisk.vhd')]"
             },
-            "storageProfile":{
-               "osDisk":{
-                  "createOption":"fromImage",
-                  "managedDisk":{
-                     "storageAccountType":"[parameters('osDiskType')]"
-                  }
-               },
-               "imageReference":{
-                  "publisher":"MicrosoftRServer",
-                  "offer":"MLServer-WS2016",
-                  "sku":"Enterprise",
-                  "version":"latest"
-               }
-            },
-            "networkProfile":{
-               "networkInterfaces":[
-                  {
-                     "id":"[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
-                  }
-               ]
-            },
-            "osProfile":{
-               "computerName":"[parameters('virtualMachineName')]",
-               "adminUsername":"[parameters('adminUsername')]",
-               "adminPassword":"[parameters('adminPassword')]"
-            },
-            "licenseType":"Windows_Server"
-         },
-         "resources":[
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          },
+          "dataDisks": [
             {
-               "type":"extensions",
-               "name":"CustomScriptExtension",
-               "apiVersion":"[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
-               "location":"[resourceGroup().location]",
-               "dependsOn":[
-                  "[resourceId('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
-               ],
-               "properties":{
-                  "publisher":"Microsoft.Compute",
-                  "type":"CustomScriptExtension",
-                  "typeHandlerVersion":"1.8",
-                  "autoUpgradeMinorVersion":true,
-                  "settings":{
-                     "fileUris":[
-                        "[concat(variables('scriptsUri'), 'ConfigureOnebox.ps1')]",
-                        "[concat(variables('scriptsUri'), 'RunConfigureOnebox.ps1')]"
-                     ],
-                     "commandToExecute":"[concat('powershell -ExecutionPolicy Unrestricted -File ./RunConfigureOnebox.ps1 -script \"ConfigureOnebox.ps1\" -username \"', parameters('adminUserName'), '\" -password \"', parameters('adminPassword'), '\"')]"
-                  }
-               }
+              "name": "datadisk1",
+              "diskSizeGB": "100",
+              "lun": 0,
+              "vhd": {
+                "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))).primaryEndpoints.blob, 'vhds/datadisk1.vhd')]"
+              },
+              "createOption": "Empty"
             }
-         ],
-         "tags":{
-
-         },
-         "zones":[
-            "[parameters('zone')]"
-         ]
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+            }
+          ]
+        },
+        "diagnosticsProfile": {
+          "bootDiagnostics": {
+            "enabled": "true",
+            "storageUri": "[reference(resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))).primaryEndpoints.blob]"
+          }
+        }
       },
-      {
-         "name":"[parameters('diagnosticsStorageAccountName')]",
-         "type":"Microsoft.Storage/storageAccounts",
-         "apiVersion":"2018-07-01",
-         "location":"[parameters('location')]",
-         "properties":{
-
-         },
-         "kind":"[parameters('diagnosticsStorageAccountKind')]",
-         "sku":{
-            "name":"[parameters('diagnosticsStorageAccountType')]"
-         },
-         "tags":{
-
-         }
-      }
-   ],
-   "outputs":{
-
-   }
+      "resources": [
+        {
+          "type": "extensions",
+          "name": "CustomScriptExtension",
+          "apiVersion": "[providers('Microsoft.Compute','virtualMachines/extensions').apiVersions[0]]",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
+          ],
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.8",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "fileUris": [
+                "[concat(variables('scriptsUri'), 'ConfigureOnebox.ps1')]",
+                "[concat(variables('scriptsUri'), 'RunConfigureOnebox.ps1')]"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ./RunConfigureOnebox.ps1 -script \"ConfigureOnebox.ps1\" -username \"', parameters('adminUserName'), '\" -password \"', parameters('adminPassword'), '\"')]"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "hostname": {
+      "type": "string",
+      "value": "[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
+    }
+  }
 }
