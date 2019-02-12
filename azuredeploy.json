@@ -7,10 +7,7 @@
        "metadata": {
         "description": "The Id of the subnet - Get from Resource Explorer."
       }
-    },
-    "osDiskType": {
-      "type": "string"
-     },    
+    },    
      "storageAccountName":{
       "type": "string"       
     },
@@ -190,10 +187,12 @@
             "version": "latest"
           },
           "osDisk": {
-              "createOption": "fromImage",
-              "managedDisk": {
-                  "storageAccountType": "[parameters('osDiskType')]"
-              }
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))).primaryEndpoints.blob, 'vhds/osdisk.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
           },
           "dataDisks": [
             {
